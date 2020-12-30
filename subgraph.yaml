@@ -1,0 +1,32 @@
+specVersion: 0.0.1
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Golem
+    network: mainnet
+    source:
+      address: "0x7DD9c5Cba05E151C895FDe1CF355C9A1D5DA6429"
+      abi: Golem
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.2
+      language: wasm/assemblyscript
+      entities:
+        - MinterAdded
+        - MinterRemoved
+        - Transfer
+        - Approval
+      abis:
+        - name: Golem
+          file: ./abis/Golem.json
+      eventHandlers:
+        - event: MinterAdded(indexed address)
+          handler: handleMinterAdded
+        - event: MinterRemoved(indexed address)
+          handler: handleMinterRemoved
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+      file: ./src/mapping.ts
